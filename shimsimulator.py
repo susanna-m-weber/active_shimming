@@ -4,20 +4,20 @@ Created on Sun Oct  1 18:36:56 2023
 
 @author: leeoralon
 """
+
+# TO DO: Which version of magpylib? 
 import sys
 sys.path.append("..")
-import magpylib as magpy
+import magpylib as magpy # version installed: 4.5 
 import numpy as np
-import magsimulator
 import pandas as pd
-import magpylib as magpy
-import scipy
+# import scipy
 from scipy.spatial.transform import Rotation as R
-import magsimulator
+# import magsimulator
 from cvxopt import matrix, solvers
 from scipy.linalg import solve
 from scipy.linalg import lstsq
-# r- radius
+# r- radius cond
 # nr - number of coils azimouthally
 # z - z position
 # nz - number of coils in z (total coils = nr*nz)
