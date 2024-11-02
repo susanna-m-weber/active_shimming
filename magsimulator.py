@@ -886,7 +886,7 @@ def get_max_magnets_per_radius(r,magnet_length):
 
 # remember B field is inputted in mT, not T
 def plot_3D_field(B_mT,Bcomponent=0,xmin=-100,xmax=100,ymin=-100,ymax=100,zmin=-100, zmax=100):
-    (nx,ny,nz) = B_mT.shape
+    (nx,ny,nz) = (11, 11, 11) # ugly hardcoding sorry
     # minmin = np.min(Bcomponent.flatten())
     # maxmax = np.max(Bcomponent.flatten())
     meanmean = np.mean(B_mT[:,:,:,Bcomponent].flatten())

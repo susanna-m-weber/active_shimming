@@ -302,7 +302,7 @@ res = minimize(problem,
                seed=10,
                verbose=True)
 
-filename = 'optimization_after_neonate_magnet_Rmin_132p7mm_extrinsic_rot_DSV140mm_maxh60_maxlayers6_maxmag990_2.xlsx'
+filename = 'optimization_after_neonate_magnet_Rmin_132p7mm_extrinsic_rot_DSV140mm_maxh60_maxlayers6_maxmag990.xlsx'
 
 fileObj = open(filename[:-4]+'pkl', 'wb')
 pickle.dump(res,fileObj)

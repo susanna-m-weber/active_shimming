@@ -25,7 +25,7 @@ from scipy.linalg import lstsq
 def generate_shim_coils_on_cylinder(r,number_mags_azimuthal,coil_diam,delta_z,delta_theta,nz,dc_phase=0,ref_curr=1,plot=False,tofile=None):
     
     # print(r,number_mags_azimuthal,coil_diam,delta_z,delta_theta,nz,dc_phase)
-    zloc = np.round(np.r_[-(nz+1)*delta_z/2+delta_z:(nz+1)*delta_z/2:delta_z],4)
+    zloc = np.round(np.r_[-(nz+1)*delta_z/2+delta_z:(nz+1)*delta_z/2:delta_z],5)
 
     point_list = []
     

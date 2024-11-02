@@ -22,25 +22,25 @@ magnets = magpy.Collection(style_label='magnets')
 eta, meanB0, col_magnet, B = magsimulator.simulate_ledger(magnets,col_sensors,mag_vect,ledger,0.06,4,True,False,None,False)
 print('mean B0='+str(round(meanB0,3)) +  ' homogeneity=' + str(round(eta,3)))
 
-data=magsimulator.extract_3Dfields(col_magnet,xmin=-70,xmax=70,ymin=-70,ymax=70,zmin=-70, zmax=70, numberpoints_per_ax = 11,filename=None,plotting=True,Bcomponent=0)
-# magsimulator.plot_3D_field(data['Bfield'],Bcomponent=0)
+data=magsimulator.extract_3Dfields(col_magnet,xmin=-70,xmax=70,ymin=-70,ymax=70,zmin=-70, zmax=70, numberpoints_per_ax = 11,filename=None,plotting=True,Bcomponent=0) #homogeneity figure
+magsimulator.plot_3D_field(data['Bfield'],Bcomponent=0) # does the same thing as the previous function - from an older version? 
 B=data['Bfield']
 col_sensors = magpy.Collection(style_label='sensors')
 sensor1 = magpy.Sensor(position=data['coordinates'])
 col_sensors.add(sensor1)
 #%%
 r=90
-number_mags_azimuthal=4
+number_mags_azimuthal= 2
 coil_diam=50
 delta_z=55.8
 delta_theta=191
-nz=5
+nz= 5
 Btar = B.reshape(-1,3)/1000 #convert mT to Tesla
 dc_phase=66
 
 ledg= shimsimulator.generate_shim_coils_on_cylinder(r,number_mags_azimuthal,coil_diam,delta_z,delta_theta,nz,dc_phase,ref_curr=1,plot=True,tofile=None)
 
-A = shimsimulator.simulate_shim_elements(ledg,col_sensors,Bfield_component=0)
+A = shimsimulator.simulate_shim_elements(ledg,col_sensors,Bfield_component=0) # shim array figure 
 
 #%%
 
