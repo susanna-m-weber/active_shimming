@@ -13,7 +13,7 @@ sys.path.append("..")
 
 import shimsimulator
 import magsimulator
-import magcadexporter
+# import magcadexporter
 import numpy as np
 import matplotlib.pyplot as plt
 import magpylib as magpy
@@ -26,8 +26,8 @@ from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool, freeze_support
 from os import getpid
 import time
-import addcopyfighandler
-import pygad
+# import addcopyfighandler
+# import pygad
 import numpy.matlib
 from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.problems import get_problem
@@ -119,7 +119,7 @@ class MultiObjectiveMixedVariableProblem(ElementwiseProblem):
 
     def __init__(self, **kwargs):
         
-        filename = '../data/optimization_after_neonate_magnet_Rmin_132p7mm_extrinsic_rot_DSV140mm_maxh60_maxlayers6_maxmag990.xlsx'
+        filename = 'optimization_after_neonate_magnet_Rmin_132p7mm_extrinsic_rot_DSV140mm_maxh60_maxlayers6_maxmag990.xlsx'
         file = open(filename[:-4]+'pkl', 'rb')
         self.data = pickle.load(file)
         self.B_background =data['Bfield']
@@ -320,15 +320,15 @@ plt.ylabel("Number of coils", fontsize=16, weight='bold')
 plt.xticks(fontsize=14, weight='bold')
 plt.show()
 #%%
-B_rescaled = B_background /1000
+# B_rescaled = B_background /1000
  
-xx=res.X
-ledger,solution,stdfield_hz = problem.get_coils(xx)
-ledger.to_excel('test.xlsx', index=False)
+#xx=res.X
+ #ledger,solution,stdfield_hz = problem.get_coils(xx)
+# ledger.to_excel('test.xlsx', index=False)
 #%%
-B_loops,loops = shimsimulator.simulate_shim_ledger(ledg,col_sensors,0,True)
+# B_loops,loops = shimsimulator.simulate_shim_ledger(ledg,col_sensors,0,True)
 
-print('std shimmed B0=' + str((np.std(Btar[:,0] - np.dot(A,m[0]).reshape(-1))*42580000)))
+# print('std shimmed B0=' + str((np.std(Btar[:,0] - np.dot(A,m[0]).reshape(-1))*42580000)))
 
 #%%
-magcadexporter.export_magnet_ledger_to_cad('mean B0=' + str(np.round(meanB0,4)) + ' homogen=' + str(np.round(eta,4)) + ' ' + filename,[0.2,0.2,0.2])
+# magcadexporter.export_magnet_ledger_to_cad('mean B0=' + str(np.round(meanB0,4)) + ' homogen=' + str(np.round(eta,4)) + ' ' + filename,[0.2,0.2,0.2])

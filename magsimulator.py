@@ -7,7 +7,7 @@ Created on Tue Jul 25 15:43:49 2023
 
 import numpy as np
 import matplotlib.pyplot as plt
-import magpylib as magpy
+import magpylib as magpy # needs to be version < 5 
 from magpylib.magnet import Cuboid, CylinderSegment
 import itertools
 from scipy.spatial.transform import Rotation as R
@@ -21,8 +21,8 @@ import time
 import pickle
 import scipy
 from loguru import logger
-from magpylib_material_response.demag import apply_demag
-from magpylib_material_response.meshing import mesh_all
+# from magpylib_material_response.demag import apply_demag - not compatible w version <5 of magpylib 
+# from magpylib_material_response.meshing import mesh_all - not compatible w version <5 of magpylib 
 # import addcopyfighandler
 
 #%%
@@ -635,10 +635,11 @@ def simulate_ledger(mags,
     # print(B)
 
     if(bool_runmeshingfordemag==True):
-        coll_meshed = mesh_all(col_magnet, target_elems=meshelements_percube, per_child_elems=True, min_elems=1)    
-        coll_demag = apply_demag(coll_meshed,style={"label": f"Coll_demag ({len(coll_meshed.sources_all):3d} cells)"},)
-        B = magpy.getB(coll_demag, col_sensors)
-        # print(B)
+        # oll_meshed = mesh_all(col_magnet, target_elems=meshelements_percube, per_child_elems=True, min_elems=1)    
+        # coll_demag = apply_demag(coll_meshed,style={"label": f"Coll_demag ({len(coll_meshed.sources_all):3d} cells)"},)
+        # B = magpy.getB(coll_demag, col_sensors)
+        print('no longer using material response - negligible')
+        B = col_sensors.getB(col_magnet)
     else:
         B = col_sensors.getB(col_magnet)
 

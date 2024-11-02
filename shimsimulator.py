@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 # import scipy
 from scipy.spatial.transform import Rotation as R
-# import magsimulator
+import magsimulator
 from cvxopt import matrix, solvers
 from scipy.linalg import solve
 from scipy.linalg import lstsq

@@ -6,23 +6,23 @@ Created on Thu Aug 31 22:03:57 2023
 """
 
 import magsimulator
-import magcadexporter
+# import magcadexporter
 import numpy as np
 import matplotlib.pyplot as plt
 import magpylib as magpy
 from magpylib.magnet import Cuboid, CylinderSegment
-import itertools
+# import itertools
 from scipy.spatial.transform import Rotation as R
 import pandas as pd
-import cProfile
-import sys
+# import cProfile
+# import sys
 from multiprocessing.pool import ThreadPool
 from multiprocessing import Pool, freeze_support
 from os import getpid
-import time
-import addcopyfighandler
-import pygad
-import numpy.matlib
+# import time
+# import addcopyfighandler
+# import pygad
+# import numpy.matlib
 from pymoo.algorithms.soo.nonconvex.ga import GA
 from pymoo.problems import get_problem
 from pymoo.optimize import minimize
