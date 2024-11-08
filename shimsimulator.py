@@ -4,20 +4,20 @@ Created on Sun Oct  1 18:36:56 2023
 
 @author: leeoralon
 """
+
+# TO DO: Which version of magpylib? 
 import sys
 sys.path.append("..")
-import magpylib as magpy
+import magpylib as magpy # version installed: 4.5 
 import numpy as np
-import magsimulator
 import pandas as pd
-import magpylib as magpy
-import scipy
+# import scipy
 from scipy.spatial.transform import Rotation as R
 import magsimulator
 from cvxopt import matrix, solvers
 from scipy.linalg import solve
 from scipy.linalg import lstsq
-# r- radius
+# r- radius cond
 # nr - number of coils azimouthally
 # z - z position
 # nz - number of coils in z (total coils = nr*nz)
@@ -25,7 +25,7 @@ from scipy.linalg import lstsq
 def generate_shim_coils_on_cylinder(r,number_mags_azimuthal,coil_diam,delta_z,delta_theta,nz,dc_phase=0,ref_curr=1,plot=False,tofile=None):
     
     # print(r,number_mags_azimuthal,coil_diam,delta_z,delta_theta,nz,dc_phase)
-    zloc = np.round(np.r_[-(nz+1)*delta_z/2+delta_z:(nz+1)*delta_z/2:delta_z],4)
+    zloc = np.round(np.r_[-(nz+1)*delta_z/2+delta_z:(nz+1)*delta_z/2:delta_z],5)
 
     point_list = []
     
@@ -185,4 +185,5 @@ def extract_3D_shim_field(loop,xmin=-70,xmax=70,ymin=-70,ymax=70,zmin=-70, zmax=
 
         B[:,:,kk,:] = loop.getB(grid_xy)
         
-    return B[:,:,:,Bcomponent]
+   #  return B[:,:,:,Bcomponent]
+    return B 
