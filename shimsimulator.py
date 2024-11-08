@@ -185,4 +185,5 @@ def extract_3D_shim_field(loop,xmin=-70,xmax=70,ymin=-70,ymax=70,zmin=-70, zmax=
 
         B[:,:,kk,:] = loop.getB(grid_xy)
         
-    return B[:,:,:,Bcomponent]
+   #  return B[:,:,:,Bcomponent]
+    return B 

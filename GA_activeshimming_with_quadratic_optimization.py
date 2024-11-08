@@ -89,7 +89,7 @@ col_sensors.add(sensor1)
 
 magnets = magpy.Collection(style_label='magnets')
 
-eta, meanB0, col_magnet, B = magsimulator.simulate_ledger(magnets,col_sensors,mag_vect,ledger,0.06,4,True,False,None,False)
+eta, meanB0, col_magnet, B = magsimulator.simulate_ledger(magnets,col_sensors,mag_vect,ledger,0.06,4,True,False,None,True)
 print('mean B0='+str(round(meanB0,3)) +  ' homogeneity=' + str(round(eta,3)))
 data = {'Bfield':  B, 'coordinates': col_sensors[0].position}
 
@@ -144,7 +144,7 @@ class MultiObjectiveMixedVariableProblem(ElementwiseProblem):
         variables["x06"] = Integer(bounds=(0, 360)) #delta theta between z increments
         
         # super().__init__(vars=variables,n_ieq_constr=1, n_obj=2, **kwargs)
-        super().__init__(vars=variables,n_ieq_constr=1, n_obj=1, **kwargs)
+        super().__init__(vars=variables,n_ieq_constr=1, n_obj=2, **kwargs)
 
 
     def _evaluate(self, x, out, *args, **kwargs):
@@ -301,7 +301,7 @@ algorithm = MixedVariableGA(pop_size=30, survival=RankAndCrowdingSurvival())
 
 res = minimize(problem,
                algorithm,
-               ('n_gen', 200),
+               ('n_gen', 20),
                seed=1,
                verbose=True)
 

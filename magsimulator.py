@@ -593,7 +593,7 @@ def simulate_ledger(mags,
                      extrinsicrot=True, 
                      bool_runmeshingfordemag=False,
                      backgroundB = None,
-                     bool_plotting2D=False):
+                     bool_plotting2D=True):
     
     Bcomponent=np.argmax(mag_constant)
     col_magnet = mags.copy()
@@ -629,7 +629,7 @@ def simulate_ledger(mags,
 
     
     if(bool_plotting2D==True):
-        magpy.show(col_magnet, col_sensors)
+        magpy.show(col_magnet)
     
     # B = col_sensors.getB(col_magnet)
     # print(B)
@@ -668,7 +668,7 @@ def simulate_ledger(mags,
             case 2:
                 strcomponent = 'z'
                 
-        plt.title('Magnitude of B'+strcomponent + ' mean:' + str(np.round(np.mean(tmpB),5)) + ' std:' + str(np.round(np.std(tmpB),6)))         
+        plt.title('Magnitude of B'+ strcomponent + ',' + ' Mean: ' + str(np.round(np.mean(tmpB),5)) + ',' + ' std:' + str(np.round(np.std(tmpB),6)))         
         plt.show()
 
     return eta, meanB0, col_magnet, B
