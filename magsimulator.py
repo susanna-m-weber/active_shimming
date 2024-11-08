@@ -7,7 +7,7 @@ Created on Tue Jul 25 15:43:49 2023
 
 import numpy as np
 import matplotlib.pyplot as plt
-import magpylib as magpy # needs to be version < 5 
+import magpylib as magpy
 from magpylib.magnet import Cuboid, CylinderSegment
 import itertools
 from scipy.spatial.transform import Rotation as R
@@ -21,8 +21,8 @@ import time
 import pickle
 import scipy
 from loguru import logger
-# from magpylib_material_response.demag import apply_demag - not compatible w version <5 of magpylib 
-# from magpylib_material_response.meshing import mesh_all - not compatible w version <5 of magpylib 
+# from magpylib_material_response.demag import apply_demag
+# from magpylib_material_response.meshing import mesh_all
 # import addcopyfighandler
 
 #%%
@@ -453,7 +453,7 @@ def cost_func(B,component=0):
     # Bcomponent=0 for X, Bcomponent=1 for Y and Bcomponent=2 for Z
     Bcomp_flat = B[:,component]   
     # Bcomp_flat = Bcomp.flatten()
-    meanfield = np.mean(B[:,component]) 
+    meanfield = B[-1,component] # last element is the field at the center, defined by another function.
     eta = 1e6*np.abs((np.max(Bcomp_flat)-np.min(Bcomp_flat))/(meanfield))  
     return eta, meanfield
 
@@ -593,7 +593,7 @@ def simulate_ledger(mags,
                      extrinsicrot=True, 
                      bool_runmeshingfordemag=False,
                      backgroundB = None,
-                     bool_plotting2D=True):
+                     bool_plotting2D=False):
     
     Bcomponent=np.argmax(mag_constant)
     col_magnet = mags.copy()
@@ -606,7 +606,6 @@ def simulate_ledger(mags,
         # print(df_row)
 #**
         cube = magpy.magnet.Cuboid(magnetization=mag_constant, dimension=(df_row['Magnet_length'],df_row['Magnet_length'],df_row['Magnet_length']))
-        # print(df_row)
         cube.position= (df_row['X-pos'],
                         df_row['Y-pos'],
                         df_row['Z-pos'])
@@ -629,17 +628,17 @@ def simulate_ledger(mags,
 
     
     if(bool_plotting2D==True):
-        magpy.show(col_magnet)
+        magpy.show(col_magnet, col_sensors)
     
     # B = col_sensors.getB(col_magnet)
     # print(B)
 
     if(bool_runmeshingfordemag==True):
-        # oll_meshed = mesh_all(col_magnet, target_elems=meshelements_percube, per_child_elems=True, min_elems=1)    
+        # coll_meshed = mesh_all(col_magnet, target_elems=meshelements_percube, per_child_elems=True, min_elems=1)    
         # coll_demag = apply_demag(coll_meshed,style={"label": f"Coll_demag ({len(coll_meshed.sources_all):3d} cells)"},)
-        # B = magpy.getB(coll_demag, col_sensors)
-        print('no longer using material response - negligible')
         B = col_sensors.getB(col_magnet)
+        # B = magpy.getB(coll_demag, col_sensors)
+        # print(B)
     else:
         B = col_sensors.getB(col_magnet)
 
@@ -667,8 +666,7 @@ def simulate_ledger(mags,
                 strcomponent = 'y'            
             case 2:
                 strcomponent = 'z'
-                
-        plt.title('Magnitude of B'+ strcomponent + ',' + ' Mean: ' + str(np.round(np.mean(tmpB),5)) + ',' + ' std:' + str(np.round(np.std(tmpB),6)))         
+        plt.title('Magnitude of B'+strcomponent + ' mean:' + str(np.round(np.mean(tmpB),5)) + ' std:' + str(np.round(np.std(tmpB),6)))         
         plt.show()
 
     return eta, meanB0, col_magnet, B
@@ -873,10 +871,6 @@ def extract_3Dfields(mags,xmin=-100,xmax=100,ymin=-100,ymax=100,zmin=-100, zmax=
 def data_to_matlab(picklefilename):
     data = pickle.load(open(picklefilename, "rb"))
     scipy.io.savemat(picklefilename[:-3]+'mat', mdict=data)
-    
-def data_from_matlab(picklefilename):
-    arr = scipy.io.loadmat(picklefilename)
-    return arr
 
 #this assumes rotations in X,Y and Z
 def get_max_magnets_per_radius(r,magnet_length):
@@ -886,7 +880,7 @@ def get_max_magnets_per_radius(r,magnet_length):
 
 # remember B field is inputted in mT, not T
 def plot_3D_field(B_mT,Bcomponent=0,xmin=-100,xmax=100,ymin=-100,ymax=100,zmin=-100, zmax=100):
-    (nx,ny,nz) = (11, 11, 11) # ugly hardcoding sorry
+    (nx,ny,nz,nd) = B_mT.shape
     # minmin = np.min(Bcomponent.flatten())
     # maxmax = np.max(Bcomponent.flatten())
     meanmean = np.mean(B_mT[:,:,:,Bcomponent].flatten())
@@ -895,12 +889,14 @@ def plot_3D_field(B_mT,Bcomponent=0,xmin=-100,xmax=100,ymin=-100,ymax=100,zmin=-
     fig, (ax1, ax2, ax3) = plt.subplots(3)
     im1=ax1.imshow(B_mT[:,:,int(nz/2),Bcomponent], vmin=meanmean-2*stdstd, vmax=meanmean+2*stdstd, cmap='jet', aspect='auto', extent=[xmin, xmax, ymin, ymax])
     add_colorbar(im1)
+    im1.set_clim(-0.5, 0.5) # change based on plot
     ax1.title.set_text('xy plane')
     
     
     im2=ax2.imshow(B_mT[:,int(ny/2),:,Bcomponent], vmin=meanmean-2*stdstd, vmax=meanmean+2*stdstd, cmap='jet', aspect='auto', extent=[xmin, xmax, zmin, zmax])
     add_colorbar(im2)
     ax2.title.set_text('xz plane')
+
     im3=ax3.imshow(B_mT[int(nx/2),:,:,Bcomponent], vmin=meanmean-2*stdstd, vmax=meanmean+2*stdstd, cmap='jet', aspect='auto', extent=[ymin, ymax, zmin, zmax])
     add_colorbar(im3)
     ax3.title.set_text('yz plane')
